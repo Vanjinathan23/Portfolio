@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ModuleId } from './types';
 import { AudioProvider } from './components/AudioEngine';
 import { BootSequence } from './components/BootSequence';
 import { OSTopNav } from './components/OSTopNav';
 import { CommandPalette } from './components/CommandPalette';
 import { RecruiterDossierModal } from './components/RecruiterDossierModal';
+import { FloatingAIBrain } from './components/FloatingAIBrain';
+import { DossierPill } from './components/DossierPill';
 
 // Modules
 import { Module01_IdentityCore } from './components/modules/Module01_IdentityCore';
 import { Module02_CareerJourney } from './components/modules/Module02_CareerJourney';
 import { Module03_ProjectVault } from './components/modules/Module03_ProjectVault';
-import { Module04_AIBrain } from './components/modules/Module04_AIBrain';
 import { Module05_SkillGalaxy } from './components/modules/Module05_SkillGalaxy';
 import { Module06_InnovationLab } from './components/modules/Module06_InnovationLab';
 import { Module07_ImpactDashboard } from './components/modules/Module07_ImpactDashboard';
@@ -20,32 +20,49 @@ import { Module09_MissionControl } from './components/modules/Module09_MissionCo
 
 export default function App() {
   const [booting, setBooting] = useState<boolean>(true);
-  const [activeModule, setActiveModule] = useState<ModuleId>('identity_core');
+  const [activeModule, setActiveModule] = useState<string>('identity_core');
   const [isCommandOpen, setIsCommandOpen] = useState<boolean>(false);
   const [isRecruiterModalOpen, setIsRecruiterModalOpen] = useState<boolean>(false);
 
-  const renderActiveModule = () => {
-    switch (activeModule) {
-      case 'identity_core':
-        return <Module01_IdentityCore />;
-      case 'career_journey':
-        return <Module02_CareerJourney />;
-      case 'project_vault':
-        return <Module03_ProjectVault />;
-      case 'ai_brain':
-        return <Module04_AIBrain />;
-      case 'skill_galaxy':
-        return <Module05_SkillGalaxy />;
-      case 'innovation_lab':
-        return <Module06_InnovationLab />;
-      case 'impact_dashboard':
-        return <Module07_ImpactDashboard />;
-      case 'future_roadmap':
-        return <Module08_FutureRoadmap />;
-      case 'mission_control':
-        return <Module09_MissionControl />;
-      default:
-        return <Module01_IdentityCore />;
+  useEffect(() => {
+    if (booting) return;
+    const handleScroll = () => {
+      const sections = [
+        'identity_core',
+        'career_and_roadmap',
+        'projects_and_innovation',
+        'skill_galaxy',
+        'impact_dashboard'
+      ];
+
+      let currentSection = sections[0];
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Adjust threshold to change tab when section is near top
+          if (rect.top <= 200) {
+            currentSection = section;
+          }
+        }
+      }
+      if (activeModule !== currentSection) {
+        setActiveModule(currentSection);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [booting, activeModule]);
+
+  const handleSelectModule = (id: string) => {
+    setActiveModule(id);
+    const element = document.getElementById(id);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80, // Adjust for fixed header height
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -66,38 +83,73 @@ export default function App() {
           <>
             <OSTopNav
               activeModule={activeModule}
-              onSelectModule={setActiveModule}
+              onSelectModule={handleSelectModule}
               onOpenCommand={() => setIsCommandOpen(true)}
               onOpenRecruiterVIP={() => setIsRecruiterModalOpen(true)}
             />
 
+            <FloatingAIBrain />
+            <DossierPill onOpen={() => setIsRecruiterModalOpen(true)} />
+
             <main className="flex-1 w-full relative z-10 py-4 pb-20 overflow-x-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeModule}
-                  initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, y: -12, filter: 'blur(6px)' }}
-                  transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full"
-                >
-                  {renderActiveModule()}
-                </motion.div>
-              </AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full"
+              >
+                {/* Scrolling Sections */}
+
+                <section id="identity_core">
+                  <Module01_IdentityCore />
+                </section>
+
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
+
+                <section id="career_and_roadmap" className="space-y-16">
+                  <Module02_CareerJourney />
+                  <Module08_FutureRoadmap />
+                </section>
+
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
+
+                <section id="projects_and_innovation" className="space-y-16">
+                  <Module03_ProjectVault />
+                  <Module06_InnovationLab />
+                </section>
+
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
+
+                <section id="skill_galaxy">
+                  <Module05_SkillGalaxy />
+                </section>
+
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
+
+                <section id="impact_dashboard">
+                  <Module07_ImpactDashboard />
+                </section>
+
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
+
+                <section id="mission_control">
+                  <Module09_MissionControl />
+                </section>
+              </motion.div>
             </main>
 
             {/* Global Modals */}
             <CommandPalette
               isOpen={isCommandOpen}
               onClose={() => setIsCommandOpen(false)}
-              onSelectModule={setActiveModule}
+              onSelectModule={handleSelectModule}
               onOpenRecruiterVIP={() => setIsRecruiterModalOpen(true)}
             />
 
             <RecruiterDossierModal
               isOpen={isRecruiterModalOpen}
               onClose={() => setIsRecruiterModalOpen(false)}
-              onTriggerHire={() => setActiveModule('mission_control')}
+              onTriggerHire={() => handleSelectModule('mission_control')}
             />
 
             {/* OS Kernel Footer Bar */}

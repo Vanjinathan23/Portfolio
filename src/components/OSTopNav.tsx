@@ -1,41 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { ModuleId } from '../types';
 import { useAudioEngine } from './AudioEngine';
-import { 
-  Terminal, 
-  Compass, 
-  GitBranch, 
-  ShieldAlert, 
-  Sparkles, 
-  Orbit, 
-  Rocket, 
-  BarChart3, 
-  Send, 
-  Search, 
-  Volume2, 
-  VolumeX, 
-  Clock, 
-  BatteryCharging, 
-  Award 
+import { ModuleId } from '../types';
+import {
+  Terminal,
+  Orbit,
+  ShieldAlert,
+  GitBranch,
+  BarChart3,
+  Search,
+  Volume2,
+  VolumeX,
+  Clock,
+  BatteryCharging,
+  Award
 } from 'lucide-react';
 
 interface NavProps {
-  activeModule: ModuleId;
-  onSelectModule: (id: ModuleId) => void;
+  activeModule: string;
+  onSelectModule: (id: string) => void;
   onOpenCommand: () => void;
   onOpenRecruiterVIP: () => void;
 }
 
-const MODULE_TABS: { id: ModuleId; label: string; icon: any }[] = [
-  { id: 'identity_core', label: 'Identity Core', icon: Orbit },
-  { id: 'career_journey', label: 'Career Journey', icon: Compass },
-  { id: 'project_vault', label: 'Project Vault', icon: ShieldAlert },
-  { id: 'ai_brain', label: 'AI Brain', icon: Sparkles },
+const MODULE_TABS = [
+  { id: 'identity_core', label: 'Identity & Vision', icon: Orbit },
+  { id: 'career_and_roadmap', label: 'Journey & Roadmaps', icon: Terminal },
+  { id: 'projects_and_innovation', label: 'Vault & Labs', icon: ShieldAlert },
   { id: 'skill_galaxy', label: 'Skill Galaxy', icon: GitBranch },
-  { id: 'innovation_lab', label: 'Innovation Lab', icon: Rocket },
-  { id: 'impact_dashboard', label: 'Impact Dashboard', icon: BarChart3 },
-  { id: 'future_roadmap', label: 'Future Roadmap', icon: Terminal },
-  { id: 'mission_control', label: 'Mission Control', icon: Send }
+  { id: 'impact_dashboard', label: 'Impact Dashboard', icon: BarChart3 }
 ];
 
 export const OSTopNav: React.FC<NavProps> = ({
@@ -57,7 +49,7 @@ export const OSTopNav: React.FC<NavProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  const handleTabClick = (id: ModuleId) => {
+  const handleTabClick = (id: string) => {
     playSwoosh();
     onSelectModule(id);
   };
@@ -83,18 +75,6 @@ export const OSTopNav: React.FC<NavProps> = ({
             <span>{utcTime || '22:04:00 UTC'}</span>
           </div>
 
-          {/* RAM simulation */}
-          <div className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded bg-[#121212]">
-            <span className="text-[#A7F432]">MEM</span>
-            <span>4.2GB / 16GB</span>
-          </div>
-
-          {/* Battery */}
-          <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded bg-[#121212]">
-            <BatteryCharging className="w-3.5 h-3.5 text-[#A7F432]" />
-            <span>99% PWR</span>
-          </div>
-
           {/* Sound Toggle */}
           <button
             onClick={toggleSound}
@@ -102,15 +82,6 @@ export const OSTopNav: React.FC<NavProps> = ({
             className="p-1.5 rounded bg-[#121212] hover:bg-[#171717] border border-white/10 hover:border-[#D4AF37]/40 text-[#CFCFCF] hover:text-[#D4AF37] transition-all cursor-pointer"
           >
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-[#D4AF37]" /> : <VolumeX className="w-3.5 h-3.5" />}
-          </button>
-
-          {/* VIP Recruiter Briefing */}
-          <button
-            onClick={onOpenRecruiterVIP}
-            className="px-3 py-1 rounded bg-gradient-to-r from-[#D4AF37]/20 to-[#D4AF37]/5 hover:from-[#D4AF37]/40 hover:to-[#D4AF37]/10 border border-[#D4AF37]/40 text-[#D4AF37] font-sans font-semibold text-[11px] tracking-wide flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-all"
-          >
-            <Award className="w-3.5 h-3.5 shrink-0" />
-            <span className="hidden xs:inline">RECRUITER 60s</span>
           </button>
 
           {/* Raycast Cmd+K Bar Trigger */}
@@ -127,7 +98,7 @@ export const OSTopNav: React.FC<NavProps> = ({
 
       {/* Bottom Horizontal Module Navigation Tabs */}
       <div className="max-w-7xl mx-auto px-4 overflow-x-auto no-scrollbar">
-        <nav className="flex items-center gap-1 py-2 min-w-max">
+        <nav className="flex items-center gap-3 py-3 min-w-max">
           {MODULE_TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeModule === tab.id;
@@ -135,11 +106,10 @@ export const OSTopNav: React.FC<NavProps> = ({
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer relative ${
-                  isActive 
-                    ? 'bg-[#171717] text-[#F7F7F7] border border-[#D4AF37]/50 shadow-[0_4px_20px_-4px_rgba(212,175,55,0.25)] font-semibold' 
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer relative ${isActive
+                    ? 'bg-[#171717] text-[#F7F7F7] border border-[#D4AF37]/50 shadow-[0_4px_20px_-4px_rgba(212,175,55,0.25)] font-semibold'
                     : 'text-[#CFCFCF]/70 hover:text-[#F7F7F7] hover:bg-[#121212]'
-                }`}
+                  }`}
               >
                 <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-[#D4AF37]' : 'opacity-70'}`} />
                 <span>{tab.label}</span>

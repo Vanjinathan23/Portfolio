@@ -92,7 +92,7 @@ export const RecruiterDossierModal: React.FC<RecruiterProps> = ({
                     width={140}
                     height={140}
                     loading="eager"
-                    className="profile-image-recruiter w-[120px] h-[120px] sm:w-[140px] sm:h-[140px]"
+                    className="profile-image-recruiter w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] bg-gradient-to-br from-[#E1CCB6] via-[#C9B39B] to-[#A08871] rounded-full object-cover"
                   />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#F7F7F7]">
