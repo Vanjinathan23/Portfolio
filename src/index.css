@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #080808;
+    --surface-sec: #121212;
+    --card-bg: #171717;
+    --text-primary: #F7F7F7;
+    --text-secondary: #CFCFCF;
+    --accent-gold: #D4AF37;
+    --accent-success: #A7F432;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: #D4AF37;
+    color: #080808;
+  }
+}
+
+/* Custom Executive Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+.glass-panel {
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: #171717;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.7), 0 0 24px -6px rgba(212, 175, 55, 0.15);
+}
+
+.gold-glow {
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.green-glow {
+  text-shadow: 0 0 20px rgba(167, 244, 50, 0.4);
+}
+
+/* ===== Profile Image — Premium Identity Integration ===== */
+
+@keyframes profile-float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes gold-ring-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.25), 0 0 60px rgba(212, 175, 55, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.4), 0 0 80px rgba(212, 175, 55, 0.15);
+  }
+}
+
+.profile-image-core {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(212, 175, 55, 0.6);
+  outline: 3px solid rgba(212, 175, 55, 0.15);
+  outline-offset: 4px;
+  box-shadow:
+    0 0 30px rgba(212, 175, 55, 0.25),
+    0 0 60px rgba(212, 175, 55, 0.1),
+    0 20px 60px -15px rgba(0, 0, 0, 0.8);
+  animation: gold-ring-pulse 4s ease-in-out infinite;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+
+.profile-image-core:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 50px rgba(212, 175, 55, 0.45),
+    0 0 100px rgba(212, 175, 55, 0.2),
+    0 25px 80px -15px rgba(0, 0, 0, 0.9);
+}
+
+.profile-float {
+  animation: profile-float 6s ease-in-out infinite;
+}
+
+/* Glassmorphism ring container for Identity Core */
+.profile-glass-ring {
+  background: rgba(18, 18, 18, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  padding: 6px;
+}
+
+/* Recruiter panel profile image */
+.profile-image-recruiter {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid rgba(212, 175, 55, 0.5);
+  outline: 2px solid rgba(212, 175, 55, 0.12);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 20px rgba(212, 175, 55, 0.2),
+    0 12px 40px -10px rgba(0, 0, 0, 0.7);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* AI Brain inline profile image */
+.profile-image-ai {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  box-shadow:
+    0 0 15px rgba(212, 175, 55, 0.15),
+    0 8px 24px -6px rgba(0, 0, 0, 0.6);
+}

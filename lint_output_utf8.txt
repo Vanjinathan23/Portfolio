@@ -1,0 +1,6 @@
+﻿
+> react-example@0.0.0 lint
+> tsc --noEmit
+
+server.ts(95,35): error TS2559: Type 'string' has no properties in common with type 'GoogleGenAIOptions'.
+server.ts(96,25): error TS2339: Property 'getGenerativeModel' does not exist on type 'GoogleGenAI'.
